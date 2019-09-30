@@ -167,7 +167,7 @@
       $user = mysqli_fetch_assoc($result);
       $priority = $user['Priority'];
 
-      $course_check_query = "SELECT * FROM courses WHERE username='$username' LIMIT 1";
+      $course_check_query = "SELECT * FROM courses WHERE Coursename='$username' LIMIT 1";
       $result_course = mysqli_query($db, $course_check_query);
       $course = mysqli_fetch_assoc($result_course);
 
@@ -239,8 +239,9 @@
   </form>
   <div class="content">
   <?php
-    if(isset($_POST['search'])){   
-      $student = $_POST['student'];   
+    if(isset($_POST['search'])){  
+      $student = $_POST['student']; 
+      $student = mysqli_real_escape_string($db, $_POST['student']);   
       $user_search_query = "SELECT * FROM $username WHERE Username='$student' LIMIT 1";
       $result = mysqli_query($db, $user_search_query);
       $user = mysqli_fetch_assoc($result);
@@ -258,8 +259,10 @@
   ?>
   <?php
     if(isset($_POST['grade'])){   
-      $student = $_POST['student'];  
+      $student = $_POST['student'];
+      $student = mysqli_real_escape_string($db, $_POST['student']);  
       $grades = $_POST['marks']; 
+      $grades = mysqli_real_escape_string($db, $_POST['marks']); 
       $user_grade_query = "UPDATE $username SET Grades='$grades' WHERE Username='$student' LIMIT 1";
       $result_grade = mysqli_query($db, $user_grade_query);
       $user_check_query = "SELECT * FROM $username WHERE Username='$student' LIMIT 1";
@@ -280,6 +283,7 @@
   <?php
     if(isset($_POST['remove'])){   
       $student = $_POST['student'];
+      $student = mysqli_real_escape_string($db, $_POST['student']);  
       $user_remove_query = "DELETE FROM $username WHERE Username='$student' LIMIT 1";
       $result = mysqli_query($db, $user_remove_query);
       $user = mysqli_fetch_assoc($result);
@@ -292,6 +296,7 @@
   <?php
     if(isset($_POST['add'])){   
       $student = $_POST['student'];
+      $student = mysqli_real_escape_string($db, $_POST['student']);  
       $grades = 0;
       $user_check_query = "SELECT * FROM $username WHERE Username='$student'LIMIT 1";
       $result = mysqli_query($db, $user_check_query);
@@ -345,6 +350,8 @@
       }
     }
   ?>
+
+  
   </div>
 </body>
 </html>

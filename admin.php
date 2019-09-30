@@ -76,6 +76,7 @@
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      font-size: 15px;
     }
 
     input[type=submit]:hover {
@@ -87,14 +88,15 @@
       border-radius: 5px;
       background-color: #ffffff;
       padding: 20px;
+      font-size: 20px;
     }
 
     div.content1{
       width: 100%;
+      text-align: center;
       border-radius: 5px;
       background-color: #ffffff;
       padding: 20px;
-      text-align: center;
     }
 
     body{
@@ -113,6 +115,22 @@
       text-align: center;
     }
 
+    table {
+      width: 100%;
+      border: 1px solid black;
+    }
+
+    th {
+      height: 100px;
+      border: 1px solid black;
+    }
+    td {
+      height: 50px;
+      vertical-align: bottom;
+      border: 1px solid black;
+      padding: 10px;
+      font-size: 20px;
+    }
     h1{
       font-family: "Courier New";
       text-align: center;
@@ -230,10 +248,31 @@
       <button type="submit" class="btn" name="create_course">Create Course</button>
     </div>
   </form>
+  <form class="form-group" method="post" action="admin.php">
+    <?php include('errors.php'); ?>
+    <div class="content">
+      <label>Coursename</label>
+      <input type="text" name="course" >
+    </div>
+    <div class="content">
+      <button type="submit" class="btn" name="get_students">Get Students</button>
+    </div>
+  </form>
+  <form class="form-group" method="post" action="admin.php">
+    <?php include('errors.php'); ?>
+    <div class="content">
+      <label>Student</label>
+      <input type="text" name="student" >
+    </div>
+    <div class="content">
+      <button type="submit" class="btn" name="get_grades">Get Grades</button>
+    </div>
+  </form>
   <div class="content">
   <?php
     if(isset($_POST['make_professor'])){   
       $student = $_POST['username'];
+      $student = mysqli_real_escape_string($db, $_POST['username']);  
       $user_grade_query = "UPDATE users SET Priority='2' WHERE Username='$student' LIMIT 1";
       $result_grade = mysqli_query($db, $user_grade_query);
       $user_check_query = "SELECT * FROM users WHERE Username='$student' LIMIT 1";
@@ -254,6 +293,7 @@
   <?php
     if(isset($_POST['make_admin'])){   
       $student = $_POST['username'];
+      $student = mysqli_real_escape_string($db, $_POST['username']);  
       $user_grade_query = "UPDATE users SET Priority='1' WHERE Username='$student' LIMIT 1";
       $result_grade = mysqli_query($db, $user_grade_query);
       $user_check_query = "SELECT * FROM users WHERE Username='$student' LIMIT 1";
@@ -274,7 +314,9 @@
   <?php
     if(isset($_POST['remstudent'])){   
       $student = $_POST['student'];
+      $student = mysqli_real_escape_string($db, $_POST['student']); 
       $course = $_POST['course'];
+      $course = mysqli_real_escape_string($db, $_POST['course']); 
       $user_grade_query = "SELECT * FROM $course WHERE Username='$student' LIMIT 1";
       $result_grade = mysqli_query($db, $user_grade_query);
       $user = mysqli_fetch_assoc($result_grade);
@@ -294,7 +336,9 @@
   <?php
     if(isset($_POST['add'])){   
       $student_add = $_POST['student'];
+      $student_add = mysqli_real_escape_string($db, $_POST['student']); 
       $course = $_POST['course'];
+      $course = mysqli_real_escape_string($db, $_POST['course']); 
 
       $user_course_query = "SELECT * FROM $course WHERE Username='$student_add'";
       $student_lookup = mysqli_query($db, $user_course_query);
@@ -335,6 +379,7 @@
   <?php
     if(isset($_POST['remprofessor'])){   
       $professor = $_POST['professor'];
+      $professor = mysqli_real_escape_string($db, $_POST['professor']); 
       $user_grade_query = "DROP TABLE $professor";
       $result_grade = mysqli_query($db, $user_grade_query);
       $user = mysqli_fetch_assoc($result);
@@ -348,6 +393,7 @@
   <?php 
     if(isset($_POST['create_course'])){   
       $course = $_POST['course'];
+      $course = mysqli_real_escape_string($db, $_POST['course']); 
 
       $user_course_query = "SELECT * FROM users WHERE Username='$course'";
       $student_lookup = mysqli_query($db, $user_course_query);
@@ -377,12 +423,11 @@
       }
     }
   ?>
-</div>
 
-  <p>
   <?php 
     if(isset($_POST['search'])){   
       $username = $_POST['student'];
+      $username = mysqli_real_escape_string($db, $_POST['student']); 
       $user_grade_query = "SELECT * FROM users WHERE Username='$username'";
       $result_grade = mysqli_query($db, $user_grade_query);
       $user = mysqli_fetch_assoc($result_grade);
@@ -411,6 +456,67 @@
       }
     }
   ?>
-  </p>
+
+  <?php
+    $course = $_POST['course'];
+    $course = mysqli_real_escape_string($db, $_POST['course']); 
+    if(isset($_POST['get_students'])){ 
+      $query = "SELECT * FROM $course";
+ 
+ 
+      echo '<table> 
+            <tr> 
+                <td> <font face="Arial">Student</font> </td> 
+                <td> <font face="Arial">Grades</font> </td>
+            </tr>';
+ 
+      if ($result = $db->query($query)) {
+        while ($row = $result->fetch_assoc()) {
+          $field1name = $row['Username'];
+          $field2name = $row['Grades'];
+ 
+          echo '<tr> 
+                  <td>'.$field1name.'</td> 
+                  <td>'.$field2name.'</td>
+                </tr>';
+        }
+        $result->free();
+      }
+    }
+  ?>
+
+  <?php
+    if(isset($_POST['get_grades'])){ 
+      $student = $_POST['student'];  
+      $student = mysqli_real_escape_string($db, $_POST['student']); 
+      $query = "SELECT * FROM courses";
+ 
+ 
+      echo '<table> 
+            <tr> 
+                <td> <font face="Arial">Course</font> </td> 
+                <td> <font face="Arial">Grades</font> </td>
+            </tr>';
+ 
+      if ($result = $db->query($query)) {
+        while ($row = $result->fetch_assoc()) {
+          $course = $row['Coursename'];
+          $field2name = $row['Grades'];
+          $user_query = "SELECT * FROM $course WHERE Username = '$student'";
+          $result_user = mysqli_query($db, $user_query);
+          $user = mysqli_fetch_assoc($result_user);
+
+          if($user){
+            echo '<tr> 
+                  <td>'.$course.'</td> 
+                  <td>'.$user['Grades'].'</td>
+                </tr>';
+          }
+        }
+        $result->free();
+      }
+    }
+  ?>
+  </div>
 </body>
 </html>

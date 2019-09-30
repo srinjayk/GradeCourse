@@ -41,32 +41,79 @@
     }
 
     input[type=text] {
-      border: 2px solid blue;
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
       border-radius: 4px;
-      background-color: #3CBC8D;
-      color: white;
+      box-sizing: border-box;
     }
 
-    input[type=password] {
-      border: 2px solid blue;
-      border-radius: 4px;
-      background-color: #3CBC8D;
+    input[type=submit] {
+      width: 100%;
+      background-color: #4CAF50;
       color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    input[type=submit]:hover {
+      background-color: #45a049;
+    }
+
+    div.content{
+      width: 500px;
+      border-radius: 5px;
+      background-color: #ffffff;
+      padding: 20px;
+      font-size: 20px;
+    }
+
+    div.content1{
+      width: 100%;
+      text-align: center;
+      border-radius: 5px;
+      background-color: #ffffff;
+      padding: 20px;
     }
 
     body{
       background-color: orange;
+      font-size: 20px;
     }
 
-    form.borders{
+    form.form-group{
+      width: 600px;
       border-style: solid;
       border-width: medium;
       padding: 10px 10px;
       border-radius: 20px;
       text-align: center;
       border-color: orange;
+      text-align: center;
     }
 
+    table {
+      width: 100%;
+      border: 1px solid black;
+    }
+
+    th {
+      height: 100px;
+      border: 1px solid black;
+    }
+    td {
+      height: 50px;
+      vertical-align: bottom;
+      border: 1px solid black;
+      padding: 10px;
+      font-size: 20px;
+    }
     h1{
       font-family: "Courier New";
       text-align: center;
@@ -79,17 +126,17 @@
   	<h2>Login</h2>
   </div>
 
-  <form class="borders" method="post" action="login.php">
+  <form class="form-group" method="post" action="login.php">
   	<?php include('errors.php'); ?>
-  	<div class="form-group">
+  	<div class="content">
   		<label><h4>Username</h4></label>
   		<input type="text" class="form-control" name="username" >
   	</div>
-  	<div class="form-group">
+  	<div class="content">
   		<label><h4>Password</h4></label>
   		<input type="password" class="form-control" name="password">
   	</div>
-  	<div class="form-group">
+  	<div class="content">
   		<button type="submit" class="btn btn-primary" name="login_user">Login</button>
   	</div>
   	<p>
