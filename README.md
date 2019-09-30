@@ -1,3 +1,3 @@
-## A simple Login and Signup form using PHP and MySQL
+## A simple Grading Portal using PHP and MySQL
 ### Assignment for CS 252                                                                 
                                                           
